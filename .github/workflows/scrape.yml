@@ -1,42 +1,36 @@
- name: 市政だより巡回                                      
-
-  "on":                                                             
-    schedule:
-      # 毎日10:00 JST（01:00 UTC）に実行                          
-      - cron: '0 1 * * *'                                         
-    workflow_dispatch: # 手動実行ボタン                           
+name: scrape                                              
                                                                   
-  permissions:                                                    
-    contents: write                                               
-                                                            
+  "on":                                                           
+    schedule:                                                     
+      - cron: '0 1 * * *'                                         
+    workflow_dispatch:                                      
+                                                                  
+  permissions:                                              
+    contents: write
+
   jobs:
     scrape:
       runs-on: ubuntu-latest
-      steps:
-        - name: リポジトリをチェックアウト
-          uses: actions/checkout@v4                               
-   
-        - name: Python セットアップ                               
-          uses: actions/setup-python@v5                     
-          with:
-            python-version: '3.11'                                
-   
-        - name: 依存ライブラリをインストール                      
-          run: pip install -r scraper/requirements.txt      
+      steps:                                                      
+        - uses: actions/checkout@v4
                                                                   
-        - name: スクレイパー実行                            
-          env:                                                    
-            LINE_CHANNEL_ACCESS_TOKEN: ${{                  
+        - uses: actions/setup-python@v5                     
+          with:                                                   
+            python-version: '3.11'                          
+
+        - run: pip install -r scraper/requirements.txt            
+   
+        - run: python scraper/scraper.py                          
+          env:                                              
+            LINE_CHANNEL_ACCESS_TOKEN: ${{                        
   secrets.LINE_CHANNEL_ACCESS_TOKEN }}                            
-            LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
-          run: python scraper/scraper.py                          
-                                                            
-        - name: データをコミット＆プッシュ                        
-          run: |                                            
+            LINE_USER_ID: ${{ secrets.LINE_USER_ID }}             
+                                                                  
+        - run: |                                            
             git config user.name "github-actions[bot]"            
             git config user.email                                 
-  "github-actions[bot]@users.noreply.github.com"
+  "github-actions[bot]@users.noreply.github.com"                  
             git add data/articles.json                            
             git diff --staged --quiet || git commit -m "data:     
-  $(date '+%Y-%m-%d') 巡回更新"                                   
+  $(date '+%Y-%m-%d')"                                            
             git push
