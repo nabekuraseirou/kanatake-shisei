@@ -1,6 +1,6 @@
  name: 市政だより巡回                                      
 
-  on:                                                             
+  "on":                                                             
     schedule:
       # 毎日10:00 JST（01:00 UTC）に実行                          
       - cron: '0 1 * * *'                                         
