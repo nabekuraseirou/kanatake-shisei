@@ -19,7 +19,7 @@ KEYWORDS = ["かなたけの里公園", "かなたけの里", "かなたけ"]
 BASE_URL = "https://www.city.fukuoka.lg.jp"
 CONTEXT_CHARS = 400  # マッチ前後に含める文字数
 
-DATA_FILE = os.path.join(os.path.dirname(__file__), "../data/articles.json")
+DATA_FILE = os.path.join(os.path.dirname(__file__), "../docs/data/articles.json")
 
 
 # -------------------------------------------------------

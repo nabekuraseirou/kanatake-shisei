@@ -182,7 +182,7 @@ async function load() {
 
   try {
     // GitHub Pages から data/articles.json を読み込む
-    const resp = await fetch('../data/articles.json');
+    const resp = await fetch('data/articles.json');
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
 
