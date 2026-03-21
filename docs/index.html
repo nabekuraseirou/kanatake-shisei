@@ -6,171 +6,193 @@
   <title>市政だより × かなたけの里公園</title>
   <style>
     :root {
-      --green: #3a7d44;
-      --light-green: #e8f5e9;
-      --border: #c8e6c9;
-      --text: #212121;
-      --muted: #757575;
-      --copy-bg: #f1f8e9;
+      --bg:      #0d0d0d;
+      --bg2:     #141414;
+      --border:  #2a2a2a;
+      --green:   #4caf50;
+      --green2:  #81c784;
+      --muted:   #555;
+      --text:    #ccc;
+      --mark:    #33691e;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: "Hiragino Sans", "Meiryo", sans-serif;
-      background: #fafafa;
+      font-family: "Menlo", "Monaco", "Courier New", monospace;
+      background: var(--bg);
       color: var(--text);
+      font-size: 13px;
       line-height: 1.7;
-      padding: 16px;
+      padding: 20px 16px;
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    header {
-      background: var(--green);
-      color: white;
-      padding: 20px 24px;
-      border-radius: 8px;
+    /* ── HEADER ── */
+    #header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
       margin-bottom: 20px;
     }
 
-    header h1 { font-size: 1.1rem; font-weight: bold; }
-    header p  { font-size: 0.8rem; opacity: 0.85; margin-top: 4px; }
+    #header .logo {
+      color: var(--green);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    #header h1 {
+      color: var(--green2);
+      font-size: 15px;
+      font-weight: normal;
+      letter-spacing: 0.05em;
+    }
 
     #status {
-      font-size: 0.78rem;
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 16px;
+      margin-top: 8px;
     }
 
-    #no-data {
-      text-align: center;
-      padding: 40px 0;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    #status span { color: var(--green); }
 
+    /* ── ARTICLE ── */
     .article {
-      background: white;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      background: var(--bg2);
       margin-bottom: 16px;
-      overflow: hidden;
     }
 
     .article-header {
-      background: var(--light-green);
-      padding: 12px 16px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      align-items: baseline;
+      gap: 12px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
     }
 
     .date-badge {
-      background: var(--green);
-      color: white;
-      font-size: 0.75rem;
-      font-weight: bold;
-      padding: 3px 10px;
-      border-radius: 20px;
+      color: var(--green);
+      font-size: 11px;
       white-space: nowrap;
     }
 
+    .date-badge::before { content: "► "; }
+
     .issue-label {
-      font-size: 0.82rem;
       color: var(--muted);
+      font-size: 11px;
     }
 
     .source-link {
       margin-left: auto;
-      font-size: 0.75rem;
-      color: var(--green);
+      font-size: 11px;
+      color: var(--muted);
       text-decoration: none;
     }
-    .source-link:hover { text-decoration: underline; }
+    .source-link:hover { color: var(--green2); }
 
+    /* ── MATCH ── */
     .match {
-      padding: 14px 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .match + .match {
+      padding: 10px 12px;
       border-top: 1px dashed var(--border);
     }
+    .match:first-child { border-top: none; }
 
     .match-heading {
-      font-size: 0.78rem;
-      font-weight: bold;
       color: var(--green);
+      font-size: 11px;
       margin-bottom: 6px;
     }
 
     .match-context {
-      font-size: 0.85rem;
       white-space: pre-wrap;
       word-break: break-all;
-      background: var(--copy-bg);
-      border-radius: 4px;
-      padding: 10px 12px;
+      color: var(--text);
+      background: var(--bg);
+      border-left: 2px solid var(--border);
+      padding: 8px 10px;
       margin-bottom: 8px;
+      font-size: 12px;
       cursor: text;
     }
 
     mark {
-      background: #fff176;
-      border-radius: 2px;
+      background: var(--mark);
+      color: #a5d6a7;
+      border-radius: 0;
       padding: 0 1px;
     }
 
     .copy-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: white;
+      background: transparent;
       border: 1px solid var(--border);
-      color: var(--green);
-      font-size: 0.75rem;
-      padding: 4px 12px;
-      border-radius: 20px;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 11px;
+      padding: 2px 10px;
       cursor: pointer;
-      transition: background 0.15s;
+      letter-spacing: 0.05em;
     }
-    .copy-btn:hover { background: var(--light-green); }
-    .copy-btn.copied {
-      background: var(--green);
-      color: white;
-      border-color: var(--green);
+    .copy-btn:hover { border-color: var(--green); color: var(--green); }
+    .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+    /* ── EMPTY / ERROR ── */
+    #no-data {
+      color: var(--muted);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    #no-data::before {
+      display: block;
+      content: "[ no data ]";
+      color: var(--border);
+      margin-bottom: 8px;
+    }
+
+    /* ── FOOTER ── */
+    #footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
 
-<header>
+<div id="header">
+  <div class="logo">KANATAKE-NO-SATO PARK / FUKUOKA CITY NEWSLETTER ARCHIVE</div>
   <h1>市政だより × かなたけの里公園</h1>
-  <p>福岡市市政だよりの掲載情報アーカイブ</p>
-</header>
+  <div id="status">loading...</div>
+</div>
 
-<div id="status">読み込み中...</div>
 <div id="container"></div>
 
-<script>
-const DATA_URL = './data.json';
+<div id="footer">福岡市市政だより掲載情報アーカイブ — 毎日10:00 自動更新</div>
 
+<script>
 function highlightKeywords(text) {
   const keywords = ["かなたけの里公園", "かなたけの里", "かなたけ"];
-  let escaped = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  let s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   keywords.forEach(kw => {
     const re = new RegExp(kw.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'g');
-    escaped = escaped.replace(re, `<mark>${kw}</mark>`);
+    s = s.replace(re, `<mark>${kw}</mark>`);
   });
-  return escaped;
+  return s;
 }
 
 function copyText(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✓ コピー済み';
+    btn.textContent = '[ copied ]';
     btn.classList.add('copied');
     setTimeout(() => {
-      btn.textContent = 'コピー';
+      btn.textContent = '[ copy ]';
       btn.classList.remove('copied');
     }, 2000);
   });
@@ -181,7 +203,6 @@ async function load() {
   const container = document.getElementById('container');
 
   try {
-    // GitHub Pages から data/articles.json を読み込む
     const resp = await fetch('data/articles.json');
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
@@ -189,12 +210,12 @@ async function load() {
     const articles = data.articles || [];
     const lastUpdated = data.last_updated
       ? new Date(data.last_updated).toLocaleString('ja-JP')
-      : '不明';
+      : '---';
 
-    statusEl.textContent = `最終巡回: ${lastUpdated} ／ 掲載件数: ${articles.length}号`;
+    statusEl.innerHTML = `last updated: <span>${lastUpdated}</span> &nbsp;|&nbsp; articles: <span>${articles.length}</span>`;
 
     if (articles.length === 0) {
-      container.innerHTML = '<div id="no-data">掲載記事がまだありません。<br>スクレイパーを実行すると自動的に表示されます。</div>';
+      container.innerHTML = '<div id="no-data">スクレイパー実行後に表示されます</div>';
       return;
     }
 
@@ -204,9 +225,9 @@ async function load() {
 
       const header = `
         <div class="article-header">
-          <span class="date-badge">${art.date_label}</span>
+          <span class="date-badge">${art.date_label}号</span>
           <span class="issue-label">${art.label || ''}</span>
-          <a class="source-link" href="${art.source_url}" target="_blank" rel="noopener">原文 ↗</a>
+          <a class="source-link" href="${art.source_url}" target="_blank" rel="noopener">[source ↗]</a>
         </div>`;
 
       const matchesHtml = (art.matches || []).map(m => {
@@ -215,7 +236,7 @@ async function load() {
           <div class="match">
             ${m.heading ? `<div class="match-heading">${m.heading}</div>` : ''}
             <div class="match-context" id="ctx-${id}">${highlightKeywords(m.context)}</div>
-            <button class="copy-btn" onclick="copyText(document.getElementById('ctx-${id}').innerText, this)">コピー</button>
+            <button class="copy-btn" onclick="copyText(document.getElementById('ctx-${id}').innerText, this)">[ copy ]</button>
           </div>`;
       }).join('');
 
@@ -224,7 +245,7 @@ async function load() {
     });
 
   } catch (e) {
-    statusEl.textContent = 'データ読み込みエラー: ' + e.message;
+    statusEl.textContent = 'error: ' + e.message;
     console.error(e);
   }
 }
