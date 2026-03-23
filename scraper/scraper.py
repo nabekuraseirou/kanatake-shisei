@@ -154,7 +154,7 @@ def fetch_html_text(url):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.content, "html.parser")
         # コンテンツ候補セレクタを順に試す
-        for selector in [{"class_": "cbody"}, {"id": "main"}, {"class_": "main"}, {"class_": "contents"}]:
+        for selector in [{"class_": "contents-sec"}, {"class_": "cbody"}, {"id": "main"}, {"class_": "main"}, {"class_": "contents"}]:
             body = soup.find(**selector)
             if body:
                 text = body.get_text(separator="\n", strip=True)
