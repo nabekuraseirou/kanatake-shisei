@@ -148,20 +148,25 @@ def get_article_links(list_url):
 # -------------------------------------------------------
 # HTML版：記事ページからテキストを抽出
 # -------------------------------------------------------
-def fetch_html_text(url):                                       
-      try:                                                        
-          resp = requests.get(url, timeout=15)                    
-          resp.raise_for_status()                                 
-          soup = BeautifulSoup(resp.content, "html.parser")       
-          body = soup.find(class_="cbody")                        
-          if body:                        
-              return body.get_text(separator="\n", strip=True)    
-          for tag in soup(["script", "style", "nav", "header","footer"]):                                                     
-              tag.decompose()                                     
-          return soup.get_text(separator="\n", strip=True)        
-      except Exception as e:                                      
-          print(f"[WARN] HTML記事取得失敗: {url} → {e}")          
-          return None
+def fetch_html_text(url):
+    try:
+        resp = requests.get(url, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.content, "html.parser")
+        # コンテンツ候補セレクタを順に試す
+        for selector in [{"class_": "cbody"}, {"id": "main"}, {"class_": "main"}, {"class_": "contents"}]:
+            body = soup.find(**selector)
+            if body:
+                text = body.get_text(separator="\n", strip=True)
+                if text:
+                    return text
+        # フォールバック：ノイズ要素を除去して全文取得
+        for tag in soup(["script", "style", "nav", "header", "footer"]):
+            tag.decompose()
+        return soup.get_text(separator="\n", strip=True)
+    except Exception as e:
+        print(f"[WARN] HTML記事取得失敗: {url} → {e}")
+        return None
 
 
 # -------------------------------------------------------
