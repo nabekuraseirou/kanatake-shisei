@@ -582,7 +582,7 @@
     "20260101siseidayorisyusei.txt",
     "20260201.txt"
   ],
-  "last_updated": "2026-03-23T12:25:03.018583",
+  "last_updated": "2026-03-23T14:07:19.176258",
   "checked_html_issues": [
     "2024/0401",
     "2024/0415",
@@ -628,6 +628,7 @@
     "reiwa8_dayori/0101",
     "reiwa8_dayori/0201",
     "reiwa8_dayori/0215",
+    "reiwa8_dayori/0301",
     "reiwa8_dayori/0315"
   ]
 }
