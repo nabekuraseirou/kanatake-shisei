@@ -43,9 +43,9 @@ def parse_args():
     )
     parser.add_argument(
         "--model", "-m",
-        default="small",
+        default="medium",
         choices=SUPPORTED_MODELS,
-        help="Whisper モデルサイズ（デフォルト: small）",
+        help="Whisper モデルサイズ（デフォルト: medium）",
     )
     parser.add_argument(
         "--language", "-l",
