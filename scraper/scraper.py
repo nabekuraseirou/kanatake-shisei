@@ -27,6 +27,10 @@ HTML_NUMBERS_URL = f"{BASE_URL}/shicho/koho/fsdweb/numbers.html"
 # HTML版バックフィル上限（初回実行時に遡る日数）
 HTML_BACKFILL_DAYS = 90
 
+# HTML版再巡回期間（発行から N 日以内の号は checked でも再巡回する）
+# 福岡市が list.html 公開後に記事を追加するケース（取りこぼし対策）
+HTML_RECHECK_DAYS = 30
+
 
 # -------------------------------------------------------
 # 年度URL生成（テキスト版用）
@@ -344,6 +348,7 @@ def scrape_html(data):
     checked_html = set(data.get("checked_html_issues", []))
     existing_dates = {a["date"] for a in data.get("articles", [])}
     cutoff = (datetime.now() - timedelta(days=HTML_BACKFILL_DAYS)).strftime("%Y%m%d")
+    recheck_cutoff = (datetime.now() - timedelta(days=HTML_RECHECK_DAYS)).strftime("%Y%m%d")
     new_articles = []
 
     issues = get_html_issue_list()
@@ -351,10 +356,6 @@ def scrape_html(data):
 
     for issue in issues:
         path_id = issue["path_id"]
-
-        if path_id in checked_html:
-            continue
-
         date_str, date_label = parse_html_issue_date(path_id)
 
         # バックフィル上限：古い号はスキップ（済みとしてマーク）
@@ -362,13 +363,18 @@ def scrape_html(data):
             checked_html.add(path_id)
             continue
 
-        # テキスト版で既に取得済みの号はスキップ
+        # 確定済みかつ再巡回期間外はスキップ
+        if path_id in checked_html and date_str < recheck_cutoff:
+            continue
+
+        # 既に記事として登録されている号はスキップ
         if date_str in existing_dates:
-            print(f"[INFO] HTML版スキップ（テキスト版取得済み）: {date_label}号")
+            print(f"[INFO] HTML版スキップ（取得済み）: {date_label}号")
             checked_html.add(path_id)
             continue
 
-        print(f"[INFO] HTML版チェック: {date_label}号")
+        is_recheck = path_id in checked_html
+        print(f"[INFO] HTML版{'再巡回' if is_recheck else 'チェック'}: {date_label}号")
         article_urls = get_article_links(issue["url"])
         print(f"[INFO]   記事数: {len(article_urls)}件")
 
