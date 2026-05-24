@@ -669,7 +669,7 @@
     "20260501.txt",
     "20260515.txt"
   ],
-  "last_updated": "2026-05-23T04:33:42.750698",
+  "last_updated": "2026-05-24T04:58:19.005901",
   "checked_html_issues": [
     "2024/0401",
     "2024/0415",
@@ -720,6 +720,7 @@
     "reiwa8_dayori/0401",
     "reiwa8_dayori/0415",
     "reiwa8_dayori/0501",
-    "reiwa8_dayori/0515"
+    "reiwa8_dayori/0515",
+    "reiwa8_dayori/0601"
   ]
 }
