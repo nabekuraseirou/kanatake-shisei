@@ -18,6 +18,10 @@ from datetime import datetime, timedelta
 KEYWORDS = ["かなたけの里公園", "かなたけの里", "かなたけ"]
 BASE_URL = "https://www.city.fukuoka.lg.jp"
 CONTEXT_CHARS = 400  # マッチ前後に含める文字数
+CONTEXT_CHARS_MAX = 3000  # 終端マーカーまで延長する場合の上限
+
+# 記事本文の自然な終端を示すマーカー（HTML版記事ページの共通フッター）
+END_MARKERS = ["この記事をシェアする"]
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "../docs/data/articles.json")
 
@@ -202,9 +206,11 @@ def parse_html_issue_date(path_id):
 # -------------------------------------------------------
 # キーワード検索（テキスト・HTML共通）
 # -------------------------------------------------------
-def search_keywords(text, keywords, context_chars=400):
+def search_keywords(text, keywords, context_chars=CONTEXT_CHARS):
     """
     テキスト内のキーワードを検索し、前後context_chars文字のコンテキストを返す。
+    マッチ後方に終端マーカー（記事フッター）があればそこまでを本文として採用し、
+    途中で切れるのを防ぐ（上限CONTEXT_CHARS_MAX）。
     重複マッチ（近傍100文字以内）は排除。
     """
     matches = []
@@ -219,6 +225,11 @@ def search_keywords(text, keywords, context_chars=400):
 
             start = max(0, pos - context_chars)
             end = min(len(text), m.end() + context_chars)
+            for marker in END_MARKERS:
+                marker_pos = text.find(marker, m.end(), m.end() + CONTEXT_CHARS_MAX)
+                if marker_pos != -1:
+                    end = marker_pos
+                    break
             context = text[start:end].strip()
 
             heading = ""
